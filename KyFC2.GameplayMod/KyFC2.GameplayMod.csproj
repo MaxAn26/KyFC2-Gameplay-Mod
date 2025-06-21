@@ -89,7 +89,7 @@
 		<MakeDir Directories="$(SolutionDir)@Release\$(AssemblyName)\$(AssemblyName)" />
 		<Copy SourceFiles="@(CopySource)" DestinationFolder="$(SolutionDir)@Release\$(AssemblyName)\$(AssemblyName)" />
 		<Copy SourceFiles="@(PreConfiguredFiles)" DestinationFolder="$(SolutionDir)@Release\$(AssemblyName)\$(AssemblyName)\%(RecursiveDir)" />
-		<!--<Copy SourceFiles="$(ProjectDir)Gameplay Mod_Readme.rtf" DestinationFolder="$(SolutionDir)@Release\$(AssemblyName)" />-->
+		<Copy SourceFiles="$(ProjectDir)Gameplay Mod_Readme.rtf" DestinationFolder="$(SolutionDir)@Release\$(AssemblyName)" />
 		<ZipDirectory SourceDirectory="$(SolutionDir)@Release\$(AssemblyName)" DestinationFile="$(SolutionDir)@Release\$(AssemblyName)-$(AssemblyVersion).zip" Overwrite="true" />
 	</Target>
 </Project>

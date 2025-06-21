@@ -21,9 +21,9 @@ internal class GameFixesMod {
             Enabled = config.Bind(nameof(GameFixesMod), nameof(Enabled), false,
                 new ConfigDescription("Activates the modification", new AcceptableValueList<bool>([true, false])));
             RequiredUndress = config.Bind(nameof(GameFixesMod), nameof(RequiredUndress), true,
-                new ConfigDescription("Set to all positions requirement to undress", new AcceptableValueList<bool>([true, false])));
+                new ConfigDescription("Set for all positions requirement to undress", new AcceptableValueList<bool>([true, false])));
             ThreesomeAssistUndress = config.Bind(nameof(GameFixesMod), nameof(ThreesomeAssistUndress), true,
-                new ConfigDescription("Undress threesome assist character", new AcceptableValueList<bool>([true, false])));
+                new ConfigDescription("Undress assist character in threesome positions", new AcceptableValueList<bool>([true, false])));
         } catch (Exception ex) {
             Plugin.Log.Error(ex.Message);
         }

@@ -9,7 +9,7 @@
 			https://nuget.bepinex.dev/v3/index.json
 		</RestoreAdditionalProjectSources>
 		<DebugType>embedded</DebugType>
-		<Platforms>AnyCPU;x64</Platforms>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -37,8 +37,8 @@
 		</Reference>
 	</ItemDefinitionGroup>
 	<ItemGroup>
-		<PackageReference Include="BepInEx.Core" Version="6.0.0-be.729" />
-		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.729" />
+		<PackageReference Include="BepInEx.Core" Version="6.0.0-be.*" />
+		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.*" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Il2Cppmscorlib">

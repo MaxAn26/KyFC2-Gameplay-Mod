@@ -19,10 +19,15 @@ namespace KyFC2.GameplayMod.Mods;
 internal class SexMoveChoiceMod {
     #region Configuration
     internal static ConfigEntry<bool> Enabled;
+    internal static ConfigEntry<bool> ChoosePositionsByGroup;
+    internal static ConfigEntry<bool> IgnorePlayerPersonality;
+    internal static ConfigEntry<bool> IgnorePlayerPositions;
+    internal static ConfigEntry<bool> PersonalityToSexTags;
     #endregion
 
     #region States
     internal static bool IsModActive => Enabled.Value;
+    internal static List<PersonalityToSexTag> PersonalityToSexTagModels { get; set; } = [];
     internal static List<SexMoveExtended> SexMoves { get; set; } = [];
     #endregion
 
@@ -34,7 +39,21 @@ internal class SexMoveChoiceMod {
         try {
             Enabled = config.Bind(nameof(SexMoveChoiceMod), nameof(Enabled), false,
                 new ConfigDescription("Activates the modification", new AcceptableValueList<bool>([true, false])));
+            ChoosePositionsByGroup = config.Bind(nameof(SexMoveChoiceMod), nameof(ChoosePositionsByGroup), true,
+                new ConfigDescription("Positions will be chosen by group (sex or foreplay) instead of by type (oral. handjob, etc.)", new AcceptableValueList<bool>([true, false])));
+            IgnorePlayerPersonality = config.Bind(nameof(SexMoveChoiceMod), nameof(IgnorePlayerPersonality), false,
+                new ConfigDescription("Ignore personality for player controlled character", new AcceptableValueList<bool>([true, false])));
+            IgnorePlayerPositions = config.Bind(nameof(SexMoveChoiceMod), nameof(IgnorePlayerPositions), false,
+                new ConfigDescription("Doesn't change positions for player controlled character", new AcceptableValueList<bool>([true, false])));
+            PersonalityToSexTags = config.Bind(nameof(SexMoveChoiceMod), nameof(PersonalityToSexTags), true,
+                new ConfigDescription("Select sex positions according with Caster personality", new AcceptableValueList<bool>([true, false])));
 
+            if (PersonalityToSexTags.Value) {
+                if (JsonUtils.TryDeserialize(Plugin.PluginResources, "PersonalityToSexTags.json", out List<PersonalityToSexTag> personalityToSexTags)) {
+                    PersonalityToSexTagModels.Clear();
+                    PersonalityToSexTagModels.AddRange(personalityToSexTags);
+                }
+            }
         } catch (Exception ex) {
             Plugin.Log.Error(ex.Message);
         }
@@ -70,6 +89,18 @@ internal class SexMoveChoiceMod {
         }
     }
 
+    internal static PersonalityToSexTag GetPersonalityToSexTag( int personalityId) {
+        try {
+            if (!Enabled.Value || !PersonalityToSexTags.Value)
+                return null;
+
+            return PersonalityToSexTagModels.FirstOrDefault(p => p.PersonalityID == personalityId);
+        } catch (Exception ex) {
+            Plugin.Log.Error(ex);
+            return null;
+        }
+    }
+
     internal static void SetSexID(SexSystem sexSystem) {
         try {
             if (!Enabled.Value || SceneManager.GetActiveScene().buildIndex != 1) {
@@ -79,6 +110,11 @@ internal class SexMoveChoiceMod {
 
             if (sexSystem is null) {
                 Plugin.Log.Info("Exit due SexSystem is NULL");
+                return;
+            }
+
+            if (IgnorePlayerPositions.Value && sexSystem.Caster.TryGetComponentWithCast(out CharacterSex characterSex) && characterSex.IsPlayer) {
+                Plugin.Log.Info("Exit due Ignoring for player character");
                 return;
             }
 
@@ -158,17 +194,32 @@ internal class SexMoveChoiceMod {
         List<SexMoveExtended> sexMoves = [];
         CharacterGender caster = sexSystem.CasterActive ? CharacterGender.Male : CharacterGender.Female;
         CharacterGender target = sexSystem.TargetActive ? CharacterGender.Male : CharacterGender.Female;
+        PersonalityToSexTag personalityToSex = sexSystem.Caster.TryGetComponentWithCast(out KyFCCharacterModComponent characterModComponent)
+            ? characterModComponent.PersonalityToSexTag
+            : null;
 
-        /*int? sexType = SexMoves.FirstOrDefault( m => m.ID == SexSystem.SexID)?.Type;
-        Plugin.Log.Message($"Origin Sex: ID: {SexSystem.SexID}, Type: {sexType}");
-        SexMoveTarget target = sexSystem.Target.GetComponentWithCast<SexInteractionModComponent>()?.HasDick() == true ? SexMoveTarget.Male : SexMoveTarget.Female;
-        Plugin.Log.Message($"Target: {target}");*/
+        List<int> sexTypes = [];
+        if (sexType is not null)
+            sexTypes.Add(sexType.Value);
+
+        if (ChoosePositionsByGroup.Value && sexType is not null) {
+            if (sexType >= 1 && sexType <= 5)
+                sexTypes.AddUniqueRange([1, 2, 3, 4, 5]);
+            else if (sexType >= 6 && sexType <= 8)
+                sexTypes.AddUniqueRange([6, 7, 8]);
+        }
+
+        if (characterModComponent.CharacterSex.IsPlayer && IgnorePlayerPersonality.Value)
+            personalityToSex = null;
 
         foreach (var sexMove in SexMoves) {
             if (sexMove.IsDisabled)
                 continue;
 
-            if (sexMove.Type != sexType)
+            if (sexTypes.Count > 0 && !sexTypes.Contains(sexMove.Type))
+                continue;
+
+            if (PersonalityToSexTags.Value && (personalityToSex is null || !personalityToSex.SexMoveCheck(sexMove)))
                 continue;
 
             if (sexMove.IsCommand && !isCollared)
@@ -203,7 +254,7 @@ internal class SexMoveChoiceMod {
         bool isCollared = sexSystem.Target?.GetComponentWithCast<KyFCCharacterModComponent>()?.IsCollared() == true;
 
         List<SexMoveExtended> sexMoves = GetCharacterSexMoves( sexSystem, sexType, isCollared );
-        if (sexMoves.Count < 10 && sexType is not null) {
+        if (sexMoves.Count < 2 && sexType is not null) {
             sexMoves.AddRange(GetCharacterSexMoves(sexSystem, sexType.Value - 1, isCollared));
             sexMoves.AddRange(GetCharacterSexMoves(sexSystem, sexType.Value + 1, isCollared));
         }

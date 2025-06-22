@@ -33,4 +33,11 @@ public static class CollectionExtensions {
 
         return mainList.Intersect( outList ).ToList();
     }
+
+    public static void AddUniqueRange<T>(this IList<T> list, IEnumerable<T> newItems) {
+        foreach (T item in newItems) {
+            if (!list.Contains(item))
+                list.Add(item);
+        }
+    }
 }

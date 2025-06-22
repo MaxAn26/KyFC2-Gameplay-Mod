@@ -6,6 +6,7 @@ using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Attributes;
 using Il2CppInterop.Runtime.Injection;
 
+using KyFC2.GameplayMod.Models;
 using KyFC2.GameplayMod.Mods;
 
 using UnityEngine;
@@ -20,6 +21,8 @@ internal class KyFCCharacterModComponent : MonoBehaviour {
     internal float BaseGloss;
     internal int EnemyArousal;
     internal int PlayerArousal;
+
+    internal PersonalityToSexTag PersonalityToSexTag;
 
     internal bool IsCharacterSelfCum;
     internal float LastCumTime;
@@ -56,6 +59,21 @@ internal class KyFCCharacterModComponent : MonoBehaviour {
                     BaseGloss = GlossEffectMod.BaseGloss.Value;
             }
 
+            if (SexMoveChoiceMod.PersonalityToSexTags.Value) {
+                KCharacter characterSO = null;
+                if (CharacterSex.IsPlayer)
+                    characterSO = CharacterSex.kyfc.PlayerCharacterSO;
+                else if (CharacterSex.IsPlayerAssist)
+                    characterSO = CharacterSex.kyfc.PlayerAssistSO;
+                else if (CharacterSex.IsEnemyAssist)
+                    characterSO = CharacterSex.kyfc.EnemyAssistSO;
+                else
+                    characterSO = CharacterSex.kyfc.EnemyCharacterSO;
+
+                if (characterSO is not null)
+                    PersonalityToSexTag = SexMoveChoiceMod.GetPersonalityToSexTag(characterSO.personality);
+            }
+
             LastCumTime = Time.time;
 
             MaterialPropertyBlock ??= new MaterialPropertyBlock();
@@ -83,6 +101,12 @@ internal class KyFCCharacterModComponent : MonoBehaviour {
                     ? CharacterSex.kyfc.PlayerArousal == CharacterSex.kyfc.PlayerMaxArousal
                     : CharacterSex.kyfc.EnemyArousal == CharacterSex.kyfc.EnemyMaxArousal;
                 LastCumTime = Time.time;
+            }
+
+            if (SexDamageMod.ArousalMoans.Value) {
+                CharacterSex.moanspeed = CharacterSex.IsPlayer || CharacterSex.IsPlayerAssist
+                    ? SexDamageMod.ArousalMoansCheck(CharacterSex.kyfc.PlayerArousal, CharacterSex.kyfc.PlayerMaxArousal)
+                    : SexDamageMod.ArousalMoansCheck(CharacterSex.kyfc.EnemyArousal, CharacterSex.kyfc.EnemyMaxArousal);
             }
         } catch (Exception e) {
             Plugin.Log.Error(e);

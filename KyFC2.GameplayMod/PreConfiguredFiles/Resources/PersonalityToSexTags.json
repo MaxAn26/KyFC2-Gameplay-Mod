@@ -1,0 +1,38 @@
+[
+  {
+    "PersonalityID": 1,
+    "PersonalityName": "Dominant",
+    "IsDominant": true,
+    "IsSensual": false,
+    "IsService": false,
+    "IsSmothering": true,
+    "IsWresting": true
+  },
+  {
+    "PersonalityID": 2,
+    "PersonalityName": "Defensive",
+    "IsDominant": false,
+    "IsSensual": false,
+    "IsService": true,
+    "IsSmothering": true,
+    "IsWresting": false
+  },
+  {
+    "PersonalityID": 3,
+    "PersonalityName": "Passionate",
+    "IsDominant": true,
+    "IsSensual": true,
+    "IsService": false,
+    "IsSmothering": false,
+    "IsWresting": false
+  },
+  {
+    "PersonalityID": 4,
+    "PersonalityName": "Submissive",
+    "IsDominant": false,
+    "IsSensual": true,
+    "IsService": true,
+    "IsSmothering": false,
+    "IsWresting": false
+  }
+]

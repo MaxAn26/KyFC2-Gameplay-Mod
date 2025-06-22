@@ -35,31 +35,49 @@ internal class GameFixesMod {
                 return;
 
             foreach(var move in kyfc.EnemySexPositionsSO) {
+                if (move is null)
+                    continue;
+
                 move.RequiresUndresBot = true;
                 move.RequiresUndresTop = true;
             }
 
             foreach (var move in kyfc.BaseEnemySexPositionsSO) {
+                if (move is null)
+                    continue;
+
                 move.RequiresUndresBot = true;
                 move.RequiresUndresTop = true;
             }
 
             foreach (var move in kyfc.TagEnemySexPositionsSO) {
+                if (move is null)
+                    continue;
+                
                 move.RequiresUndresBot = true;
                 move.RequiresUndresTop = true;
             }
 
             foreach (var move in kyfc.PlayerSexPositionsSO) {
+                if (move is null)
+                    continue;
+                
                 move.RequiresUndresBot = true;
                 move.RequiresUndresTop = true;
             }
 
             foreach (var move in kyfc.BasePlayerSexPositionsSO) {
+                if (move is null)
+                    continue;
+                
                 move.RequiresUndresBot = true;
                 move.RequiresUndresTop = true;
             }
 
             foreach (var move in kyfc.TagPlayerSexPositionsSO) {
+                if (move is null)
+                    continue;
+                
                 move.RequiresUndresBot = true;
                 move.RequiresUndresTop = true;
             }

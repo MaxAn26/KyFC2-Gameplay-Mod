@@ -22,6 +22,8 @@ internal class SexMoveChoiceMod {
     internal static ConfigEntry<bool> ChoosePositionsByGroup;
     internal static ConfigEntry<bool> IgnorePlayerPersonality;
     internal static ConfigEntry<bool> IgnorePlayerPositions;
+    internal static ConfigEntry<bool> IgnoreForSignaturePosition;
+    internal static ConfigEntry<bool> LockTypeForSignaturePosition;
     internal static ConfigEntry<bool> PersonalityToSexTags;
     #endregion
 
@@ -45,6 +47,10 @@ internal class SexMoveChoiceMod {
                 new ConfigDescription("Ignore personality for player controlled character", new AcceptableValueList<bool>([true, false])));
             IgnorePlayerPositions = config.Bind(nameof(SexMoveChoiceMod), nameof(IgnorePlayerPositions), false,
                 new ConfigDescription("Doesn't change positions for player controlled character", new AcceptableValueList<bool>([true, false])));
+            IgnoreForSignaturePosition = config.Bind(nameof(SexMoveChoiceMod), nameof(IgnoreForSignaturePosition), false,
+                new ConfigDescription("Doesn't change position for Signature positions", new AcceptableValueList<bool>([true, false])));
+            LockTypeForSignaturePosition = config.Bind(nameof(SexMoveChoiceMod), nameof(LockTypeForSignaturePosition), false,
+                new ConfigDescription("For Signature position will be used positions with same SexType as a default position", new AcceptableValueList<bool>([true, false])));
             PersonalityToSexTags = config.Bind(nameof(SexMoveChoiceMod), nameof(PersonalityToSexTags), true,
                 new ConfigDescription("Select sex positions according with Caster personality", new AcceptableValueList<bool>([true, false])));
 
@@ -110,6 +116,11 @@ internal class SexMoveChoiceMod {
 
             if (sexSystem is null) {
                 Plugin.Log.Info("Exit due SexSystem is NULL");
+                return;
+            }
+
+            if (IgnoreForSignaturePosition.Value && ( sexSystem.kyfc.SexIsEnemySignature || sexSystem.kyfc.SexIsPlayerSignature)) {
+                Plugin.Log.Info("Exit due Ignoring for Signature positions");
                 return;
             }
 
@@ -190,7 +201,7 @@ internal class SexMoveChoiceMod {
         return poses;
     }
 
-    public static List<SexMoveExtended> GetCharacterSexMoves(SexSystem sexSystem, int? sexType, bool isCollared) {
+    public static List<SexMoveExtended> GetCharacterSexMoves(SexSystem sexSystem, int? sexType, bool isSignature, bool isCollared) {
         List<SexMoveExtended> sexMoves = [];
         CharacterGender caster = sexSystem.CasterActive ? CharacterGender.Male : CharacterGender.Female;
         CharacterGender target = sexSystem.TargetActive ? CharacterGender.Male : CharacterGender.Female;
@@ -202,11 +213,13 @@ internal class SexMoveChoiceMod {
         if (sexType is not null)
             sexTypes.Add(sexType.Value);
 
-        if (ChoosePositionsByGroup.Value && sexType is not null) {
-            if (sexType >= 1 && sexType <= 5)
-                sexTypes.AddUniqueRange([1, 2, 3, 4, 5]);
-            else if (sexType >= 6 && sexType <= 8)
-                sexTypes.AddUniqueRange([6, 7, 8]);
+        if (!isSignature || !LockTypeForSignaturePosition.Value) {
+            if (ChoosePositionsByGroup.Value && sexType is not null) {
+                if (sexType >= 1 && sexType <= 5)
+                    sexTypes.AddUniqueRange([1, 2, 3, 4, 5]);
+                else if (sexType >= 6 && sexType <= 8)
+                    sexTypes.AddUniqueRange([6, 7, 8]);
+            }
         }
 
         if (characterModComponent.CharacterSex.IsPlayer && IgnorePlayerPersonality.Value)
@@ -251,12 +264,13 @@ internal class SexMoveChoiceMod {
     private static SexMoveExtended GetSexMove(SexSystem sexSystem) {
         int? sexType = SexMoves.FirstOrDefault( m => m.ID == SexSystem.SexID)?.Type;
         Plugin.Log.Message($"Origin Sex: ID: {SexSystem.SexID}, Type: {sexType}");
+        bool isSignature = ( sexSystem.kyfc.SexIsEnemySignature || sexSystem.kyfc.SexIsPlayerSignature);
         bool isCollared = sexSystem.Target?.GetComponentWithCast<KyFCCharacterModComponent>()?.IsCollared() == true;
 
-        List<SexMoveExtended> sexMoves = GetCharacterSexMoves( sexSystem, sexType, isCollared );
-        if (sexMoves.Count < 2 && sexType is not null) {
-            sexMoves.AddRange(GetCharacterSexMoves(sexSystem, sexType.Value - 1, isCollared));
-            sexMoves.AddRange(GetCharacterSexMoves(sexSystem, sexType.Value + 1, isCollared));
+        List<SexMoveExtended> sexMoves = GetCharacterSexMoves( sexSystem, sexType, isSignature,isCollared );
+        if (sexMoves.Count < 5 && sexType is not null && (!isSignature || !LockTypeForSignaturePosition.Value)) {
+            sexMoves.AddRange(GetCharacterSexMoves(sexSystem, sexType.Value - 1, false, isCollared));
+            sexMoves.AddRange(GetCharacterSexMoves(sexSystem, sexType.Value + 1, false, isCollared));
         }
 
 

@@ -18,6 +18,7 @@
 		<MainVersion>1.0</MainVersion>
 		<BuildVersion>$([System.DateTime]::UtcNow.ToString(yy))$([System.DateTime]::UtcNow.DayOfYear.ToString(000))</BuildVersion>
 		<VersionTime>$([System.DateTime]::UtcNow.ToString(HHmm))</VersionTime>
+		<SolutionDir>$(ProjectDir)../</SolutionDir>
 	</PropertyGroup>
 
 	<PropertyGroup>

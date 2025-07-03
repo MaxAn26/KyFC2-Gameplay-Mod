@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseMod.Core", "BaseMod.Core\BaseMod.Core.csproj", "{91F0566E-BEAE-6F25-2B86-1F43E72FC92D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KyFC2.GameplayMod", "KyFC2.GameplayMod\KyFC2.GameplayMod.csproj", "{E5491A3F-CBA8-4862-BD07-A46B65FCD463}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91F0566E-BEAE-6F25-2B86-1F43E72FC92D}.Debug|x64.ActiveCfg = Debug|x64
+		{91F0566E-BEAE-6F25-2B86-1F43E72FC92D}.Debug|x64.Build.0 = Debug|x64
+		{91F0566E-BEAE-6F25-2B86-1F43E72FC92D}.Release|x64.ActiveCfg = Release|x64
+		{91F0566E-BEAE-6F25-2B86-1F43E72FC92D}.Release|x64.Build.0 = Release|x64
+		{E5491A3F-CBA8-4862-BD07-A46B65FCD463}.Debug|x64.ActiveCfg = Debug|x64
+		{E5491A3F-CBA8-4862-BD07-A46B65FCD463}.Debug|x64.Build.0 = Debug|x64
+		{E5491A3F-CBA8-4862-BD07-A46B65FCD463}.Release|x64.ActiveCfg = Release|x64
+		{E5491A3F-CBA8-4862-BD07-A46B65FCD463}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {897506AA-60A1-4CAE-B16C-EE3D7B385181}
+	EndGlobalSection
+EndGlobal

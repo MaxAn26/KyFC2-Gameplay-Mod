@@ -53,18 +53,33 @@ internal class SexDamageMod {
             float deltaTime = Time.time - characterModComponent.LastCumTime;
             float rate = 1f;
             if (characterModComponent.IsCharacterSelfCum) {
-                if (deltaTime < 15f) {
-                    rate = 0.60f;
-                } else if (deltaTime < 30f) {
-                    rate = 0.80f;
+                if (PlayerData.Instance.adultSettingsDATA.SexfightMode == 0){
+                    if (deltaTime < 15f) {
+                        rate = 0.60f;
+                    } else if (deltaTime < 30f) {
+                        rate = 0.80f;
+                    }
+                } else if (PlayerData.Instance.adultSettingsDATA.SexfightMode == 1) {
+                    if (characterModComponent.LastCumTurn < kyfc.CurrentTurn - 5) {
+                        rate = 0.60f;
+                    } else if (characterModComponent.LastCumTurn < kyfc.CurrentTurn - 2) {
+                        rate = 0.80f;
+                    }
                 }
             } else {
-                if (deltaTime < 15f) {
-                    rate = 0.80f;
+                if (PlayerData.Instance.adultSettingsDATA.SexfightMode == 0) {
+                    if (deltaTime < 15f) {
+                        rate = 0.80f;
+                    }
+                } else if (PlayerData.Instance.adultSettingsDATA.SexfightMode == 1) {
+                    if (characterModComponent.LastCumTurn < kyfc.CurrentTurn - 3) {
+                        rate = 0.80f;
+                    }
                 }
             }
 
             float newArousal = arousalDamage * rate;
+            Plugin.Log.Info($"{characterModComponent.CharacterSex.CharacterSO.CharacterName}: Arousal fatigue damage: {arousalDamage} -> {newArousal}");
             return Mathf.Max(1, Mathf.RoundToInt(newArousal));
         } catch (Exception ex) {
             Plugin.Log.Error(ex.Message);
@@ -120,6 +135,8 @@ internal class SexDamageMod {
             }
 
             float newArousal = arousalDamage * rate;
+            KCharacter character = isPlayer ? kyfc.PlayerCharacterSO : kyfc.EnemyCharacterSO;
+            Plugin.Log.Info($"{character.CharacterName}: Arousal starter damage: {arousalDamage} -> {newArousal}");
             return Mathf.Max(1, Mathf.RoundToInt(newArousal));
         } catch (Exception ex) {
             Plugin.Log.Error(ex.Message);

@@ -25,6 +25,7 @@ internal class KyFCCharacterModComponent : MonoBehaviour {
     internal PersonalityToSexTag PersonalityToSexTag;
 
     internal bool IsCharacterSelfCum;
+    internal int LastCumTurn;
     internal float LastCumTime;
 
     static KyFCCharacterModComponent() {
@@ -75,6 +76,7 @@ internal class KyFCCharacterModComponent : MonoBehaviour {
             }
 
             LastCumTime = Time.time;
+            LastCumTurn = 0;
 
             MaterialPropertyBlock ??= new MaterialPropertyBlock();
         } catch (Exception e) {
@@ -101,6 +103,7 @@ internal class KyFCCharacterModComponent : MonoBehaviour {
                     ? CharacterSex.kyfc.PlayerArousal == CharacterSex.kyfc.PlayerMaxArousal
                     : CharacterSex.kyfc.EnemyArousal == CharacterSex.kyfc.EnemyMaxArousal;
                 LastCumTime = Time.time;
+                LastCumTurn = CharacterSex.kyfc.CurrentTurn;
             }
 
             if (SexDamageMod.ArousalMoans.Value) {

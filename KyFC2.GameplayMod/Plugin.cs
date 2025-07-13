@@ -32,6 +32,7 @@ public class Plugin : BasePlugin {
         PluginConfigs = Path.Combine(baseDirectory, "Configs");
         PluginResources = Path.Combine(baseDirectory, "Resources");
 
+        AchievementFixMod.Load(Config);
         GameFixesMod.Load(Config);
         GlossEffectMod.Load(Config);
         RandomFemaleGenitalsMod.Load(Config);
@@ -39,6 +40,7 @@ public class Plugin : BasePlugin {
         SexDamageMod.Load(Config);
         SexMoveChoiceMod.Load(Config);
 
+        Harmony.PatchAll(typeof(AchievementManagerPatch));
         Harmony.PatchAll(typeof(CharacterSexPatch));
         Harmony.PatchAll(typeof(KyFCPatch));
         Harmony.PatchAll(typeof(SexSystemPatch));

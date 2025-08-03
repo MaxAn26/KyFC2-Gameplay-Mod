@@ -13,7 +13,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<!-- Изменяем значение при работе над новой заявкой -->
 		<MainVersion>1.1</MainVersion>
 		<BuildVersion>$([System.DateTime]::UtcNow.ToString(yy))$([System.DateTime]::UtcNow.DayOfYear.ToString(000))</BuildVersion>
 		<VersionTime>$([System.DateTime]::UtcNow.ToString(HHmm))</VersionTime>

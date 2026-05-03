@@ -83,7 +83,7 @@ internal class SexDamageMod
             }
 
             float newArousal = arousalDamage * rate;
-            Plugin.Log.Info($"{characterModComponent.CharacterSex.CharacterSO.CharacterName}: Arousal fatigue damage: {arousalDamage} -> {newArousal}");
+            GameplayMod.Log.Msg($"{characterModComponent.CharacterSex.CharacterSO.CharacterName}: Arousal fatigue damage: {arousalDamage} -> {newArousal}");
             return Mathf.Max(1, Mathf.RoundToInt(newArousal));
         }
         catch (Exception ex)
@@ -160,7 +160,7 @@ internal class SexDamageMod
 
             float newArousal = arousalDamage * rate;
             KCharacter character = isPlayer ? kyfc.PlayerCharacterSO : kyfc.EnemyCharacterSO;
-            Plugin.Log.Info($"{character.CharacterName}: Arousal starter damage: {arousalDamage} -> {newArousal}");
+            GameplayMod.Log.Msg($"{character.CharacterName}: Arousal starter damage: {arousalDamage} -> {newArousal}");
             return Mathf.Max(1, Mathf.RoundToInt(newArousal));
         }
         catch (Exception ex)

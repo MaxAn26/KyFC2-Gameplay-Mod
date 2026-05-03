@@ -1,0 +1,47 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Platforms>x64</Platforms>
+    <DebugType>embedded</DebugType>
+
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MainVersion>1.1</MainVersion>
+    <BuildVersion>$([System.DateTime]::UtcNow.ToString(yy))$([System.DateTime]::UtcNow.DayOfYear.ToString(000))</BuildVersion>
+    <VersionTime>$([System.DateTime]::UtcNow.ToString(HHmm))</VersionTime>
+    <AssemblyVersion>$(MainVersion).$(BuildVersion).$(VersionTime)</AssemblyVersion>
+    <Version>$(MainVersion).$(BuildVersion)</Version>
+    <Deterministic>false</Deterministic>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPluginLib Condition="'$(IsPluginLib)' == ''">false</IsPluginLib>
+
+    <GameDeveloper>Skyflare Studios</GameDeveloper>
+    <GameName>Kinky Fight Club 2</GameName>
+
+    <ModDeveloper>BoL4oNoK</ModDeveloper>
+    <ModDescription />
+    <ModName />
+    <ModUrl>https://github.com/MaxAn26/KyFC2-Gameplay-Mod</ModUrl>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <Reference>
+      <Private>false</Private>
+    </Reference>
+  </ItemDefinitionGroup>
+</Project>

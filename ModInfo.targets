@@ -1,0 +1,43 @@
+<Project>
+  <Target Name="GenerateModInfo" BeforeTargets="BeforeCompile" Condition="'$(IsPluginLib)' == 'true'" >
+    <!-- Путь к файлу -->
+    <PropertyGroup>
+      <GeneratedModInfoFile>$(IntermediateOutputPath)ModInfo.cs</GeneratedModInfoFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_InfoLines Include="internal static class ModInfo {" />
+
+      <_InfoLines Include="   public const string GAME_DEVELOPER = &quot;$(GameDeveloper)&quot;%3B" Condition="'$(GameDeveloper)' != ''" />
+      <_InfoLines Include="   public const string GAME_DEVELOPER = null%3B" Condition="'$(GameDeveloper)' == ''" />
+
+      <_InfoLines Include="   public const string GAME_NAME = &quot;$(GameName)&quot;%3B" Condition="'$(GameName)' != ''" />
+      <_InfoLines Include="   public const string GAME_NAME = null%3B" Condition="'$(GameName)' == ''" />
+
+      <_InfoLines Include="   public const string MOD_DEVELOPER = &quot;$(ModDeveloper)&quot;%3B" Condition="'$(ModDeveloper)' != ''" />
+      <_InfoLines Include="   public const string MOD_DEVELOPER = &quot;Unknown&quot;%3B" Condition="'$(ModDeveloper)' == ''" />
+
+      <_InfoLines Include="   public const string MOD_GUID = &quot;$(AssemblyName)&quot;%3B" />
+
+      <_InfoLines Include="   public const string MOD_NAME = &quot;$(ModName)&quot;%3B" Condition="'$(ModName)' != ''" />
+      <_InfoLines Include="   public const string MOD_NAME = &quot;Unknown&quot;%3B" Condition="'$(ModName)' == ''" />
+
+      <_InfoLines Include="   public const string MOD_VERSION = &quot;$(Version)&quot;%3B" />
+
+      <_InfoLines Include="   public const string MOD_URL = &quot;$(ModUrl)&quot;%3B" Condition="'$(ModUrl)' != ''" />
+      <_InfoLines Include="   public const string MOD_URL = null%3B" Condition="'$(ModUrl)' == ''" />
+
+      <_InfoLines Include="}" />
+    </ItemGroup>
+
+    <!-- Запись содержимого -->
+    <WriteLinesToFile File="$(GeneratedModInfoFile)"
+                      Overwrite="true"
+                      Lines="@(_InfoLines)" />
+
+    <!-- Подключаем файл к компиляции -->
+    <ItemGroup>
+      <Compile Include="$(GeneratedModInfoFile)" />
+    </ItemGroup>
+  </Target>
+</Project>

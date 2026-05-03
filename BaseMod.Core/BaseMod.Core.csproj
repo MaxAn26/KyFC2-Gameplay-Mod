@@ -1,54 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="LavaGang.MelonLoader" />
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<RestoreAdditionalProjectSources>
-			https://api.nuget.org/v3/index.json;
-			https://nuget.bepinex.dev/v3/index.json
-		</RestoreAdditionalProjectSources>
-		<DebugType>embedded</DebugType>
-		<Platforms>x64</Platforms>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<MainVersion>1.1</MainVersion>
-		<BuildVersion>$([System.DateTime]::UtcNow.ToString(yy))$([System.DateTime]::UtcNow.DayOfYear.ToString(000))</BuildVersion>
-		<VersionTime>$([System.DateTime]::UtcNow.ToString(HHmm))</VersionTime>
-	</PropertyGroup>
-	<PropertyGroup>
-		<Product>$(AssemblyName)</Product>
-		<Authors>BoL4oNoK</Authors>
-		<Copyright>Copyright © BoL4oNoK $([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
-		<AssemblyVersion>$(MainVersion).$(BuildVersion).$(VersionTime)</AssemblyVersion>
-		<Version>$(MainVersion).$(BuildVersion)</Version>
-		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-		<Deterministic>false</Deterministic>
-	</PropertyGroup>
-	<ItemDefinitionGroup>
-		<PackageReference>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<Reference>
-			<Private>false</Private>
-		</Reference>
-	</ItemDefinitionGroup>
-	<ItemGroup>
-		<PackageReference Include="BepInEx.Core" Version="6.0.0-be.*" />
-		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.*" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Include="Il2Cppmscorlib">
-	    <HintPath>..\Libs\Il2Cppmscorlib.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.CoreModule">
-	    <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.ImageConversionModule">
-	    <HintPath>..\Libs\UnityEngine.ImageConversionModule.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>..\Libs\Il2CppInterop.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>..\Libs\Il2Cppmscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

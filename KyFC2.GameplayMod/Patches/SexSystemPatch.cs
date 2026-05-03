@@ -1,19 +1,24 @@
-﻿using System;
-
 using HarmonyLib;
-
+using Il2Cpp;
 using KyFC2.GameplayMod.Mods;
 
 namespace KyFC2.GameplayMod.Patches;
-internal class SexSystemPatch {
-    internal static bool Prepare() {
-        try {
+internal class SexSystemPatch
+{
+    internal static bool Prepare()
+    {
+        try
+        {
             if (!SexMoveChoiceMod.IsModActive && !ReverseModeMod.IsModActive && !GameFixesMod.IsModActive)
+            {
                 return false;
+            }
 
             return true;
-        } catch (Exception) {
-            Plugin.Log.LogWarning($"{nameof(SexSystemPatch)} not applied due exeption");
+        }
+        catch (Exception)
+        {
+            GameplayMod.Log.Warning($"{nameof(SexSystemPatch)} not applied due exeption");
             return false;
         }
     }
@@ -21,19 +26,25 @@ internal class SexSystemPatch {
     [HarmonyPostfix]
     [HarmonyWrapSafe]
     [HarmonyPatch(typeof(SexSystem), nameof(SexSystem.Setup))]
-    static void SexSystemSetupPostfix(SexSystem __instance) {
+    static void SexSystemSetupPostfix(SexSystem __instance)
+    {
         if (__instance.IsThreesome)
+        {
             GameFixesMod.ThreesomeAssistUndressFix(__instance);
+        }
     }
 
     [HarmonyPrefix]
     [HarmonyWrapSafe]
     [HarmonyPatch(typeof(SexSystem), nameof(SexSystem.SetHeavyBondageAnimation))]
-    static bool SexSystemSetHeavyBondageAnimationPrefix(SexSystem __instance, bool __runOriginal) {
+    static bool SexSystemSetHeavyBondageAnimationPrefix(SexSystem __instance, bool __runOriginal)
+    {
         SexMoveChoiceMod.SetSexID(__instance);
 
         if (!__runOriginal)
+        {
             return false;
+        }
 
         return true;
     }
@@ -41,11 +52,14 @@ internal class SexSystemPatch {
     [HarmonyPrefix]
     [HarmonyWrapSafe]
     [HarmonyPatch(typeof(SexSystem), nameof(SexSystem.SetSexAnimation))]
-    static bool SexSystemSetSexAnimationPrefix(SexSystem __instance, bool __runOriginal) {
+    static bool SexSystemSetSexAnimationPrefix(SexSystem __instance, bool __runOriginal)
+    {
         SexMoveChoiceMod.SetSexID(__instance);
 
         if (!__runOriginal)
+        {
             return false;
+        }
 
         return true;
     }
@@ -53,18 +67,19 @@ internal class SexSystemPatch {
     [HarmonyPostfix]
     [HarmonyWrapSafe]
     [HarmonyPatch(typeof(SexSystem), nameof(SexSystem.SetSexAnimation))]
-    static void SexSystemSetSexAnimationPostfix(SexSystem __instance) {
-        ReverseModeMod.Apply(__instance);
-    }
+    static void SexSystemSetSexAnimationPostfix(SexSystem __instance) => ReverseModeMod.Apply(__instance);
 
     [HarmonyPrefix]
     [HarmonyWrapSafe]
     [HarmonyPatch(typeof(SexSystem), nameof(SexSystem.SetThreesomeAnimation))]
-    static bool SexSystemSetThreesomeAnimationPrefix(SexSystem __instance, bool __runOriginal) {
+    static bool SexSystemSetThreesomeAnimationPrefix(SexSystem __instance, bool __runOriginal)
+    {
         SexMoveChoiceMod.SetSexID(__instance);
 
         if (!__runOriginal)
+        {
             return false;
+        }
 
         return true;
     }
@@ -72,14 +87,10 @@ internal class SexSystemPatch {
     [HarmonyPostfix]
     [HarmonyWrapSafe]
     [HarmonyPatch(typeof(SexSystem), nameof(SexSystem.SetThreesomeAnimation))]
-    static void SexSystemSetThreesomeAnimationPostfix(SexSystem __instance) {
-        ReverseModeMod.Apply(__instance);
-    }
+    static void SexSystemSetThreesomeAnimationPostfix(SexSystem __instance) => ReverseModeMod.Apply(__instance);
 
     [HarmonyPostfix]
     [HarmonyWrapSafe]
     [HarmonyPatch(typeof(SexSystem), nameof(SexSystem.Start))]
-    static void SexSystemStartPostfix(SexSystem __instance) {
-        GameFixesMod.RequiredUndressFix(__instance.kyfc);
-    }
+    static void SexSystemStartPostfix(SexSystem __instance) => GameFixesMod.RequiredUndressFix(__instance.kyfc);
 }

@@ -1,96 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPluginLib>true</IsPluginLib>
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>latest</LangVersion>
-		<RestoreAdditionalProjectSources>
-		  https://api.nuget.org/v3/index.json;
-		  https://nuget.bepinex.dev/v3/index.json;
-		  https://nuget.samboy.dev/v3/index.json
-		</RestoreAdditionalProjectSources>
-		<RootNamespace>KyFC2.GameplayMod</RootNamespace>
-		<DebugType>embedded</DebugType>
-		<Platforms>x64</Platforms>
-	</PropertyGroup>
+    <ModName>Kinky Fight Club 2. Gameplay Mod</ModName>
+    <ModDescription>MelonLoader mod for extend Gameplay in Kinky Fight Club 2</ModDescription>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<MainVersion>1.0</MainVersion>
-		<BuildVersion>$([System.DateTime]::UtcNow.ToString(yy))$([System.DateTime]::UtcNow.DayOfYear.ToString(000))</BuildVersion>
-		<VersionTime>$([System.DateTime]::UtcNow.ToString(HHmm))</VersionTime>
-		<SolutionDir>$(ProjectDir)../</SolutionDir>
-	</PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="LavaGang.MelonLoader" />
+  </ItemGroup>
 
-	<PropertyGroup>
-		<AssemblyName>KyFC2.GameplayMod</AssemblyName>
-		<Description>KyFC2 Gameplay Mod</Description>
-		<Product>$(Description)</Product>
-		<Authors>BoL4oNoK</Authors>
-		<Copyright>Copyright © BoL4oNoK $([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
-		<AssemblyVersion>$(MainVersion).$(BuildVersion).$(VersionTime)</AssemblyVersion>
-		<Version>$(MainVersion).$(BuildVersion)</Version>
-		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-		<Deterministic>false</Deterministic>
-	</PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaseMod.Core\BaseMod.Core.csproj" />
+  </ItemGroup>
 
-	<ItemDefinitionGroup>
-		<PackageReference>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<Reference>
-			<Private>false</Private>
-		</Reference>
-	</ItemDefinitionGroup>
-
-	<ItemGroup>
-		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.*" IncludeAssets="compile" />
-		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\BaseMod.Core\BaseMod.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Reference Include="Assembly-CSharp">
-	    <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Il2Cppmscorlib">
-	    <HintPath>..\Libs\Il2Cppmscorlib.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.AnimationModule">
-	    <HintPath>..\Libs\UnityEngine.AnimationModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.CoreModule">
-	    <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.PhysicsModule">
-	    <HintPath>..\Libs\UnityEngine.PhysicsModule.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-	
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<ItemGroup>
-			<CopySource Include="$(TargetDir)*.dll" />
-			<PreConfiguredFiles Include="$(ProjectDir)PreConfiguredFiles\**\*.*" />
-		</ItemGroup>
-
-		<MakeDir Directories="$(SolutionDir)@Mods\$(AssemblyName)" />
-		<Copy SourceFiles="@(CopySource)" DestinationFolder="$(SolutionDir)@Mods\$(AssemblyName)" />
-		<Copy SourceFiles="@(PreConfiguredFiles)" DestinationFolder="$(SolutionDir)@Mods\$(AssemblyName)\%(RecursiveDir)" />
-	</Target>
-	
-	<Target Name="PostPublish" AfterTargets="Publish" Condition="'$(Configuration)'=='Release'">
-		<ItemGroup>
-			<CopySource Include="$(PublishDir)*.dll" />
-			<PreConfiguredFiles Include="$(ProjectDir)PreConfiguredFiles\**\*.*" />
-		</ItemGroup>
-
-		<MakeDir Directories="$(SolutionDir)@Release\$(AssemblyName)\$(AssemblyName)" />
-		<Copy SourceFiles="@(CopySource)" DestinationFolder="$(SolutionDir)@Release\$(AssemblyName)\$(AssemblyName)" />
-		<Copy SourceFiles="@(PreConfiguredFiles)" DestinationFolder="$(SolutionDir)@Release\$(AssemblyName)\$(AssemblyName)\%(RecursiveDir)" />
-		<Copy SourceFiles="$(ProjectDir)Gameplay Mod_Readme.rtf" DestinationFolder="$(SolutionDir)@Release\$(AssemblyName)" />
-		<ZipDirectory SourceDirectory="$(SolutionDir)@Release\$(AssemblyName)" DestinationFile="$(SolutionDir)@Release\$(AssemblyName)-$(AssemblyVersion).zip" Overwrite="true" />
-	</Target>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\Libs\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>..\Libs\Il2CppInterop.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>..\Libs\Il2Cppmscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>..\Libs\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\Libs\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

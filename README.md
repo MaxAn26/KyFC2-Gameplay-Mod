@@ -2,7 +2,7 @@
 
 **Game**: Kinky Fight Club 2  
 **Version**: 1.0+
-**Mod Type**: BepInEx plugin (DLL injection)  
+**Mod Type**: MelonLoader mod (DLL injection)
 **Content**: NSFW (text-based only, no media)
 
 > ⚠️ This project contains mature (NSFW) content in textual form only. It is intended for adults. No visual or audio content of a sexual nature is hosted in this repository.
@@ -15,12 +15,10 @@ The mod does **not** introduce new visual assets or media. Instead, it extends e
 
 ## Installation
 
-1. Download latest BepInEx Unity IL2CPP for Windows x64 
-	(File: BepInEx-Unity.IL2CPP-win-x64-*.zip): https://builds.bepinex.dev/projects/bepinex_be
-2.	Extract into game folder
-3.	Copy mod folder to \BepInEx\plugins\ folder and start game
-4.	Launch the game. Configuration file will be generated automatically on the first run in \BepInEx\config\
-5.	Open the configuration file and enable the modifications you are interested in
+1.	Install MelonLoader 0.7.2+ according with Getting Started instruction: https://melonwiki.xyz/#/README
+2.  Copy all mod folder to root <Game folder> folder and start game
+3.	Launch the game. Configuration file will be generated automatically on the first run in <Game folder>\UserData\
+4.	Open the configuration file and enable the modifications you are interested in
 
 ## Compatibility
 

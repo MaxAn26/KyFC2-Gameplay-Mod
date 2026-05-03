@@ -1,7 +1,8 @@
-﻿using System;
+using Il2Cpp;
 
 namespace KyFC2.GameplayMod.Models;
-internal class SexMoveExtended : IComparable<SexMoveExtended> {
+internal class SexMoveExtended : IComparable<SexMoveExtended>
+{
     public bool IsDisabled { get; set; }
     public int Type { get; set; }
     public int ID { get; set; }
@@ -25,20 +26,27 @@ internal class SexMoveExtended : IComparable<SexMoveExtended> {
 
     public int CompareTo(SexMoveExtended other) => other is null ? 1 : ID.CompareTo(other.ID);
 
-    public override bool Equals(object obj) {
+    public override bool Equals(object obj)
+    {
         if (obj is null)
+        {
             return false;
+        }
 
         if (obj is not SexMoveExtended sexMove2)
+        {
             return false;
+        }
 
         return ID == sexMove2.ID;
     }
 
     public override int GetHashCode() => ID.GetHashCode();
 
-    internal static SexMoveExtended FromSexMove(SexMove sexMove) {
-        var sexMoveExtended = new SexMoveExtended() {
+    internal static SexMoveExtended FromSexMove(SexMove sexMove)
+    {
+        var sexMoveExtended = new SexMoveExtended()
+        {
             Type = sexMove.Type,
             ID = sexMove.ID,
             Name = sexMove.Name,
@@ -57,23 +65,31 @@ internal class SexMoveExtended : IComparable<SexMoveExtended> {
         };
 
         if (sexMove.TagFemdom && !sexMove.TagMaledom)
+        {
             sexMoveExtended.CasterRole = CharacterRole.Passive;
+        }
         else if (!sexMove.TagFemdom && sexMove.TagMaledom)
+        {
             sexMoveExtended.CasterRole = CharacterRole.Active;
+        }
         else
+        {
             sexMoveExtended.CasterRole = CharacterRole.Any;
+        }
 
         return sexMoveExtended;
     }
 }
 
-internal enum CharacterGender {
+internal enum CharacterGender
+{
     Any,
     Female,
     Male
 }
 
-internal enum CharacterRole {
+internal enum CharacterRole
+{
     Any,
     Active,
     Passive

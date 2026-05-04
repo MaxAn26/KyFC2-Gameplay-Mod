@@ -21,7 +21,6 @@ internal class AchievementFixMod
         {
             Enabled = config.Entry(nameof(AchievementFixMod), nameof(Enabled), true,
                 "Activates the modification", new AcceptableValueList<bool>([true, false]));
-
         }
         catch (Exception ex)
         {
@@ -31,6 +30,11 @@ internal class AchievementFixMod
 
     internal static void ReportProgress(AchievementManager achievementManager, string achievementID, int amount = 1)
     {
+        if (!Enabled.Value)
+        {
+            return;
+        }
+
         List<AchievementData> achievements = [];
 
         foreach (AchievementData obj in achievementManager.runtimeAchievements)

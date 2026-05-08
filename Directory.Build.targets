@@ -9,10 +9,12 @@
     <Description Condition="'$(ModDescription)' != ''">$(ModDescription)</Description>
     <Title Condition="'$(ModName)' != ''"> $(ModName)</Title>
   </PropertyGroup>
-  <Import Condition="'$(IsPluginLib)' == 'true'" Project="ModInfo.targets" />
+  <Import Condition="'$(IsPluginLib)' == 'true'" 
+          Project="ModInfo.targets" />
 
   <Target Name="CopyModsAfterBuild" AfterTargets="PostBuildEvent" Condition="'$(IsPluginLib)' == 'true'" >
-    <Message Importance="high" Text="=====> Execute PostBuild Target: CopyModsAfterBuild for $(AssemblyName) =====" />
+    <Message Importance="high" 
+             Text="=====> Execute PostBuild Target: CopyModsAfterBuild for $(AssemblyName) =====" />
     <PropertyGroup>
       <OutBaseDir>$(MSBuildThisFileDirectory)@Mods\</OutBaseDir>
       <OutModsDir>$(OutBaseDir)Mods\</OutModsDir>
@@ -26,39 +28,39 @@
       <PreConfiguredFiles Include="$(ProjectDir)PreConfiguredFiles\**\*.*" />
     </ItemGroup>
 
+    <Message Importance="high" 
+             Text="===> Copying files to Mods: $(OutModsDir)" />
     <MakeDir Directories="$(OutModsDir)" />
-    <MakeDir Directories="$(OutUserLibsDir)" />
+    <Copy SourceFiles="@(ModDll)"
+          DestinationFolder="$(OutModsDir)"
+          SkipUnchangedFiles="true" />
 
-    <Message Importance="high" Text="===> Copying files to Mods: $(OutModsDir)" />
-    <Copy
-      SourceFiles="@(ModDll)"
-      DestinationFolder="$(OutModsDir)"
-      SkipUnchangedFiles="true" />
+    <Message Importance="high"
+             Text="===> Copying files to UserLibs: $(OutUserLibsDir)"
+             Condition="'@(UserLibs)' != ''" />
+    <MakeDir Directories="$(OutUserLibsDir)"
+             Condition="'@(UserLibs)' != ''" />
+    <Copy SourceFiles="@(UserLibs)"
+          DestinationFolder="$(OutUserLibsDir)" 
+          SkipUnchangedFiles="true"
+          Condition="'@(UserLibs)' != ''"  />
 
-    <Message
-      Importance="high"
-      Text="===> Copying files to UserLibs: $(OutUserLibsDir)"
-      Condition="'@(UserLibs)' != ''" />
-    <Copy
-      SourceFiles="@(UserLibs)"
-      DestinationFolder="$(OutUserLibsDir)" SkipUnchangedFiles="true"
-      Condition="'@(UserLibs)' != ''"  />
-
-    <Message
-      Importance="high"
-      Text="===> Copying files to UserData: $(OutUserDataDir)"
-      Condition="'@(PreConfiguredFiles)' != ''" />
-    <RemoveDir
-      Directories="$(OutUserDataDir)"
-      Condition="'@(PreConfiguredFiles)' != ''" />
-    <Copy
-      SourceFiles="@(PreConfiguredFiles)"
-      DestinationFolder="$(OutUserDataDir)%(RecursiveDir)"
-      Condition="'@(PreConfiguredFiles)' != ''" />
+    <Message Importance="high"
+             Text="===> Copying files to UserData: $(OutUserDataDir)"
+             Condition="'@(PreConfiguredFiles)' != ''" />
+    <RemoveDir Directories="$(OutUserDataDir)"
+               Condition="'@(PreConfiguredFiles)' != ''" />
+    <MakeDir Directories="$(OutUserDataDir)"
+             Condition="'@(PreConfiguredFiles)' != ''" />
+    <Copy SourceFiles="@(PreConfiguredFiles)"
+          DestinationFolder="$(OutUserDataDir)%(RecursiveDir)"
+          Condition="'@(PreConfiguredFiles)' != ''" />
   </Target>
 
   <Target Name="CopyModsAfterPublish" AfterTargets="Publish" Condition="'$(IsPluginLib)' == 'true' AND '$(Configuration)'=='Release'">
-    <Message Importance="high" Text="=====> Execute Publish Target: CopyModsAfterPublish for $(AssemblyName) =====" />
+    <Message Importance="high" 
+             Text="=====> Execute Publish Target: CopyModsAfterPublish for $(AssemblyName) =====" />
+    
     <PropertyGroup>
       <OutReleaseDir>$(MSBuildThisFileDirectory)@Release\</OutReleaseDir>
       <OutRootDir>$(OutReleaseDir)$(AssemblyName)\</OutRootDir>
@@ -75,46 +77,43 @@
     </ItemGroup>
 
     <RemoveDir Directories="$(OutRootDir)" />
-    <MakeDir Directories="$(OutModsDir)" />
-    <MakeDir Directories="$(OutUserLibsDir)" />
-    <MakeDir Directories="$(OutUserDataDir)" />
-
+    
     <Message Importance="high" Text="===> Copying files to Mods: $(OutModsDir)" />
-    <Copy
-      SourceFiles="@(ModDll)"
-      DestinationFolder="$(OutModsDir)"
-      SkipUnchangedFiles="true" />
+    <MakeDir Directories="$(OutModsDir)" />
+    <Copy SourceFiles="@(ModDll)"
+          DestinationFolder="$(OutModsDir)"
+          SkipUnchangedFiles="true" />
 
-    <Message
-      Importance="high"
-      Text="===> Copying files to UserLibs: $(OutUserLibsDir)"
-      Condition="'@(UserLibs)' != ''" />
-    <Copy
-      SourceFiles="@(UserLibs)"
-      DestinationFolder="$(OutUserLibsDir)" SkipUnchangedFiles="true"
-      Condition="'@(UserLibs)' != ''"  />
+    <Message Importance="high"
+             Text="===> Copying files to UserLibs: $(OutUserLibsDir)"
+             Condition="'@(UserLibs)' != ''" />
+    <MakeDir Directories="$(OutUserLibsDir)"
+             Condition="'@(UserLibs)' != ''" />
+    <Copy SourceFiles="@(UserLibs)"
+          DestinationFolder="$(OutUserLibsDir)" 
+          SkipUnchangedFiles="true"
+          Condition="'@(UserLibs)' != ''"  />
 
-    <Message
-      Importance="high"
-      Text="===> Copying files to UserData: $(OutUserLibsDir)"
-      Condition="'@(PreConfiguredFiles)' != ''" />
-    <Copy
-      SourceFiles="@(PreConfiguredFiles)"
-      DestinationFolder="$(OutUserDataDir)%(RecursiveDir)"
-      Condition="'@(PreConfiguredFiles)' != ''" />
+    <Message Importance="high"
+             Text="===> Copying files to UserData: $(OutUserDataDir)"
+             Condition="'@(PreConfiguredFiles)' != ''" />
+    <MakeDir Directories="$(OutUserDataDir)"
+             Condition="'@(PreConfiguredFiles)' != ''" />
+    <Copy SourceFiles="@(PreConfiguredFiles)"
+          DestinationFolder="$(OutUserDataDir)%(RecursiveDir)"
+          Condition="'@(PreConfiguredFiles)' != ''" />
 
-    <Message
-      Importance="high"
-      Text="===> Copying files to mod root dir: $(OutRootDir)"
-      Condition="'@(ReadmeFiles)' != ''" />
-    <Copy
-      SourceFiles="@(ReadmeFiles)"
-      DestinationFolder="$(OutRootDir)"
-      Condition="'@(ReadmeFiles)' != '' "/>
+    <Message Importance="high"
+             Text="===> Copying files to mod root dir: $(OutRootDir)"
+             Condition="'@(ReadmeFiles)' != ''" />
+    <Copy SourceFiles="@(ReadmeFiles)"
+          DestinationFolder="$(OutRootDir)"
+          Condition="'@(ReadmeFiles)' != '' "/>
 
-    <Message
-        Importance="high"
-        Text="===> Create Zip-archive: $(AssemblyName)-$(AssemblyVersion).zip" />
-    <ZipDirectory SourceDirectory="$(OutRootDir)" DestinationFile="$(OutReleaseDir)$(AssemblyName)-$(AssemblyVersion).zip" Overwrite="true" />
+    <Message Importance="high"
+             Text="===> Create Zip-archive: $(AssemblyName)-$(AssemblyVersion).zip" />
+    <ZipDirectory SourceDirectory="$(OutRootDir)" 
+                  DestinationFile="$(OutReleaseDir)$(AssemblyName)-$(AssemblyVersion).zip" 
+                  Overwrite="true" />
   </Target>
 </Project>

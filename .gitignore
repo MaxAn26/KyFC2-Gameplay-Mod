@@ -398,6 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Game & Mod output folders
-@[Mm]ods/
-@[Rr]elease
+@[Mm]ods*/
+@[Rr]elease/
 [Ll]ibs/
+LocalData.props

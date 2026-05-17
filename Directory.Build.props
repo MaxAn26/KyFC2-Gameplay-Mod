@@ -44,4 +44,23 @@
       <Private>false</Private>
     </Reference>
   </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LavaGang.MelonLoader" />
+    <PackageReference Include="Il2CppInterop.HarmonySupport" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>..\Libs\Il2Cppmscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <LocalDataFile>$(MSBuildThisFileDirectory)LocalData.props</LocalDataFile>
+  </PropertyGroup>
+  <Import Project="$(LocalDataFile)" Condition="Exists('$(LocalDataFile)')" />
 </Project>

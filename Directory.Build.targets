@@ -16,7 +16,8 @@
     <Message Importance="high" 
              Text="=====> Execute PostBuild Target: CopyModsAfterBuild for $(AssemblyName) =====" />
     <PropertyGroup>
-      <OutBaseDir>$(MSBuildThisFileDirectory)@Mods\</OutBaseDir>
+      <OutBaseDir Condition="'$(GameDir)' == ''">$(MSBuildThisFileDirectory)@Mods\$(GameName)\</OutBaseDir>
+      <OutBaseDir Condition="'$(GameDir)' != ''">$([MSBuild]::EnsureTrailingSlash('$(GameDir)'))</OutBaseDir>
       <OutModsDir>$(OutBaseDir)Mods\</OutModsDir>
       <OutUserLibsDir>$(OutBaseDir)UserLibs\</OutUserLibsDir>
       <OutUserDataDir>$(OutBaseDir)UserData\$(AssemblyName)\</OutUserDataDir>

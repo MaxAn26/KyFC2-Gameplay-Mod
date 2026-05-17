@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="LavaGang.MelonLoader" Version="0.7.2" />
+    <PackageVersion Include="Il2CppInterop.HarmonySupport" Version="1.5.1" />
   </ItemGroup>
 </Project>
